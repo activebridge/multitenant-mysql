@@ -7,6 +7,7 @@ The idea is taken from http://blog.empowercampaigns.com/post/1044240481/multi-te
 The advantages of such approach:
 - no default scopes
 - only one db
+- no Threads
 - the biggest advantage is that responsebility about the data is moved to the db layer. It means the customer shouldn't be warry about developer's mistake before very critical demo and the logic of the app is much simplier.
 
 == Code Status
