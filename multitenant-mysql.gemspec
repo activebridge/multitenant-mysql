@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["korpan.eugene@gamil.com"]
   gem.description   = %q{Integrates multi-tenancy into Rail application with MySql db}
   gem.summary       = %q{Add multi-tenancy to Rails application using MySql views}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/eugenekorpan/multitenant-mysql"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
