@@ -1,0 +1,101 @@
+== Multitenant::Mysql
+ 
+Web app often face multitenancy problem and there are already few gems that help to solve this issue but this one uses different approach.
+Instead of default scopes or creating a separate database for every single tenant this gem uses mysql views and triggers.
+The idea is taken from http://blog.empowercampaigns.com/post/1044240481/multi-tenant-data-and-mysql
+
+The advantages of such approach:
+- no default scopes
+- only one db
+- the biggest advantage is that responsebility about the data is moved to the db layer. It means the customer shouldn't be warry about developer's mistake before very critical demo and the logic of the app is much simplier.
+
+== Code Status
+
+* {<img src="https://travis-ci.org/eugenekorpan/multitenant-mysql.png?branch=master"/>}[http://travis-ci.org/eugenekorpan/multitenant-mysql]
+* {<img src="https://gemnasium.com/eugenekorpan/multitenant-mysql.png" alt="Dependency Status" />}[https://gemnasium.com/eugenekorpan/multitenant-mysql]
+* {<img src="https://codeclimate.com/github/eugenekorpan/multitenant-mysql.png" />}[https://codeclimate.com/github/eugenekorpan/multitenant-mysql]
+
+
+== Installation
+
+1 Add this line to your application's Gemfile:
+
+    gem 'multitenant-mysql'
+
+2 And then execute:
+
+    $ bundle
+
+== Usage
+
+1 run
+  rails g multitenant:install
+
+this will create a sample of config file in "rails_root/config/multitenant_mysql_conf.rb"
+This is the place where you list all your tenant dependent models and the model which contains all the tenants.
+E.g:
+
+  Multitenant::Mysql.active_record_configs = {
+    models: ['Book', 'Task'],
+    tenant_model: { name: 'Subdomain' }
+  }
+
+Important: Before moving on you have to update this file as all further steps use those configs.
+
+2 generate migrations based on configs
+  rails g multitenant:migrations
+
+3 migrate the database
+  rake db:migrate
+
+4 generate mysql views and triggers
+  rails g multitenant:views_and_triggers
+
+5 in ApplicationController
+  set_current_tenant :tenant_method
+
+where `:tenant_method` is a methods which produces the current tenant name. It can be subdomain or current user's company name
+E.g.
+
+  class ApplicationController < ActionController::Base
+
+    set_current_tenant :tenant_name
+
+    def tenant_name
+      current_user.tenant.name # or request.subdomain
+    end
+
+  end
+
+if method used by `set_current_tenant` returns blank name then `root` account is used
+
+== Host It Works
+
+About the main principles you can read here http://blog.empowercampaigns.com/post/1044240481/multi-tenant-data-and-mysql.
+
+As for gem implementation.
+There are three main things to make it work:
+
+- models that are tenant dependend
+  This one should be pretty obvious, all you need to do is just specify models in config file, no code inside the model;
+
+- model which stores all tenants (in this case this is just a username of mysql account)
+  The information about this one you need to provide in config file. 
+  This one is very simple, all you need is a column like `name` or `title` (or you can specify in config file) and by creating new entry you create MySql account (new tenant). Only after creating new entry with particular name you are able to use new tenant (otherwise there is just no MySql account and it won't work for particular tenant)
+
+- `set_current_tenant` in ApplicationController
+  As a param of this method is the name of ApplicationController method which returns the name of current tenant.
+  Behind the scenes it creates a before_filter which uses current tenant name to establish appropriate connection to db.
+
+== Feedback
+
+So far it is tested with ruby 1.9.3 and rails 3.2
+If you get any problems please feel free to post an issue
+
+== Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
