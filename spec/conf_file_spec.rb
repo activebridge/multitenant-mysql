@@ -24,6 +24,13 @@ describe Multitenant::Mysql::ConfFile do
       subject.path = '/conf/file'
       expect(subject.full_path).to eql('/conf/file.rb')
     end
+
+    it 'should return correct path no metter how many times we call it' do
+      subject.path = '/conf/file'
+      2.times do
+        expect(subject.full_path).to eql('/conf/file.rb')
+      end
+    end
   end
 
   context '.default_path' do

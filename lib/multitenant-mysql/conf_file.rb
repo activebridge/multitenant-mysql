@@ -11,7 +11,7 @@ module Multitenant
       end
 
       def self.full_path
-        path << '.rb'
+        "#{path}.rb"
       end
 
       def self.default_path
