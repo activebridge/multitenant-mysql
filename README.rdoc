@@ -12,6 +12,7 @@ The advantages of such approach:
 
 == Code Status
 
+* {<img src="https://fury-badge.herokuapp.com/rb/multitenant-mysql.png" alt="Gem Version" />}[http://badge.fury.io/rb/multitenant-mysql]
 * {<img src="https://travis-ci.org/eugenekorpan/multitenant-mysql.png?branch=master"/>}[http://travis-ci.org/eugenekorpan/multitenant-mysql]
 * {<img src="https://gemnasium.com/eugenekorpan/multitenant-mysql.png" alt="Dependency Status" />}[https://gemnasium.com/eugenekorpan/multitenant-mysql]
 * {<img src="https://codeclimate.com/github/eugenekorpan/multitenant-mysql.png" />}[https://codeclimate.com/github/eugenekorpan/multitenant-mysql]
