@@ -1,6 +1,6 @@
 == Multitenant::Mysql
  
-Web app often face multitenancy problem and there are already few gems that help to solve this issue but this one uses different approach.
+Web app often faces multitenancy problem and there are already few gems that help to solve this issue but this one uses different approach.
 Instead of default scopes or creating a separate database for every single tenant this gem uses mysql views and triggers.
 The idea is taken from http://blog.empowercampaigns.com/post/1044240481/multi-tenant-data-and-mysql
 
@@ -70,7 +70,7 @@ E.g.
 
 if method used by `set_current_tenant` returns blank name then `root` account is used
 
-== Host It Works
+== How It Works
 
 About the main principles you can read here http://blog.empowercampaigns.com/post/1044240481/multi-tenant-data-and-mysql.
 
