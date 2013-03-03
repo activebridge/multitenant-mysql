@@ -13,7 +13,7 @@ module Multitenant
           "add_column :#{model.table_name}, :tenant, :string"
         }
 
-        dest_path = Rails.root.to_s + "/db/migrate/#{migration_number}_#{MIGRATION_NAME}.rb"
+        dest_path = "db/migrate/#{migration_number}_#{MIGRATION_NAME}.rb"
         migration = File.new(dest_path, "w")
         migration.puts(migration_code(actions))
         migration.close
@@ -35,7 +35,7 @@ end)
       end
 
       def migration_exists?
-        migrations = Dir.entries(Rails.root.to_s + "/db/migrate")
+        migrations = Dir.entries("db/migrate")
         migrations.any? { |m| m.include?(MIGRATION_NAME) }
       end
     end
