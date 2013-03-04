@@ -5,6 +5,7 @@ describe ActiveRecord::Base do
 
   before do
     Multitenant::Mysql::ConfFile.path = CONF_FILE_PATH
+    Multitenant::Mysql.arc = { models: ['Book', 'Task'] }
   end
 
   it 'should respond to acts_as_tenant' do

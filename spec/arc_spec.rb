@@ -63,5 +63,17 @@ describe Multitenant::Mysql do
       end
     end
 
+    context 'alias methods' do
+      it 'should use aliased setter' do
+        subject.arc = 'ARC'
+        expect(subject.active_record_configs).to eql('ARC')
+      end
+
+      it 'should use aliased getter' do
+        subject.active_record_configs = 'ABC'
+        expect(subject.arc).to eql('ABC')
+      end
+    end
+
   end
 end
