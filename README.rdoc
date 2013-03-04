@@ -71,6 +71,8 @@ E.g.
 
 if method used by `set_current_tenant` returns blank name then `root` account is used
 
+Note: if you want to use subdomain as a tenant name then you can use `set_current_tenant_by_subdomain` method. Just add it into your application_controller. In this case `set_current_tenant` is not needed.
+
 == How It Works
 
 About the main principles you can read here http://blog.empowercampaigns.com/post/1044240481/multi-tenant-data-and-mysql.

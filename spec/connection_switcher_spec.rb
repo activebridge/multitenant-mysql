@@ -14,7 +14,7 @@ describe Multitenant::Mysql::ConnectionSwitcher do
       ac_mock = double('ActionController::Base')
       ac_mock.should_receive(:send).and_return('unexisting tenant')
       switcher = Multitenant::Mysql::ConnectionSwitcher.new(ac_mock, :tenant_method)
-      switcher.stub(:db_config).and_return({ username: 'root' })
+      Multitenant::Mysql::DB.stub(:configs).and_return({ 'username' => 'root' })
 
       expect { switcher.execute }.to raise_error(Multitenant::Mysql::NoTenantRegistratedError)
     end
@@ -27,11 +27,23 @@ describe Multitenant::Mysql::ConnectionSwitcher do
       ac_mock = double('ActionController::Base')
       ac_mock.should_receive(:tenant_method)
       switcher = Multitenant::Mysql::ConnectionSwitcher.new(ac_mock, :tenant_method)
-      switcher.stub(:db_config).and_return({ username: 'root' })
+      Multitenant::Mysql::DB.stub(:configs).and_return({ 'username' => 'root' })
 
       ActiveRecord::Base.should_receive(:establish_connection)
 
       expect( switcher.execute ).to be
+    end
+  end
+
+  context '.set_tenant' do
+    subject { Multitenant::Mysql::ConnectionSwitcher }
+
+    it 'should change db connection' do
+      Multitenant::Mysql::Tenant.stub(:exists?).and_return(true)
+      Multitenant::Mysql::DB.stub(:configs).and_return({ 'username' => 'root' })
+
+      ActiveRecord::Base.should_receive(:establish_connection).with({ 'username' => 'google'})
+      expect( subject.set_tenant('google') ).to be
     end
   end
 end

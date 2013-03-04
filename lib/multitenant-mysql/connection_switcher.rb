@@ -2,6 +2,21 @@ module Multitenant
   module Mysql
     class NoTenantRegistratedError < StandardError; end;
 
+    class DB
+      class << self
+        def configs
+          Rails.configuration.database_configuration[Rails.env]
+        end
+
+        def establish_connection_for tenant_name
+          config = configs
+          config['username'] = tenant_name.blank? ? 'root' : tenant_name
+          ActiveRecord::Base.establish_connection(config)
+          true
+        end
+      end
+    end
+
     class Tenant
       def self.exists? tenant_name
         return true if tenant_name.blank?
@@ -22,25 +37,13 @@ module Multitenant
 
       def self.set_tenant(tenant_name)
         return unless Tenant.exists?(tenant_name)
-
-        config = Rails.configuration.database_configuration[Rails.env]
-        config['username'] = tenant_name.blank? ? 'root' : tenant_name
-        ActiveRecord::Base.establish_connection(config)
+        DB.establish_connection_for tenant_name
       end
 
       def execute
-        config = db_config
-
         tenant_name = action_controller.send(method)
         return unless Tenant.exists?(tenant_name)
-
-        config['username'] = tenant_name.blank? ? 'root' : tenant_name
-        ActiveRecord::Base.establish_connection(config)
-        true
-      end
-
-      def db_config
-        Rails.configuration.database_configuration[Rails.env]
+        DB.establish_connection_for tenant_name
       end
     end
 
