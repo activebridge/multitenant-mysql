@@ -37,7 +37,7 @@ this will create a sample of config file in "rails_root/config/multitenant_mysql
 This is the place where you list all your tenant dependent models and the model which contains all the tenants.
 E.g:
 
-  Multitenant::Mysql.active_record_configs = {
+  Multitenant::Mysql.arc = {
     models: ['Book', 'Task'],
     tenant_model: { name: 'Subdomain' }
   }
@@ -51,7 +51,7 @@ Important: Before moving on you have to update this file as all further steps us
   rake db:migrate
 
 4 generate mysql views and triggers
-  rails g multitenant:views_and_triggers
+  rails g multitenant:views_and_triggers:create
 
 5 in ApplicationController
   set_current_tenant :tenant_method
@@ -71,7 +71,23 @@ E.g.
 
 if method used by `set_current_tenant` returns blank name then `root` account is used
 
-Note: if you want to use subdomain as a tenant name then you can use `set_current_tenant_by_subdomain` method. Just add it into your application_controller. In this case `set_current_tenant` is not needed.
+== Options and Notes
+
+- if you have changed columns for tenant dependend models then you need to regenerate views, you could use generator
+multitenant:views_and_triggers:refresh
+
+- if you want to use subdomain as a tenant name then you can use metho
+  set_current_tenant_by_subdomain
+
+- list of available generators to manage views and triggers
+  multitenant:triggers:create
+  multitenant:triggers:drop
+  multitenant:triggers:refresh
+  multitenant:views:create
+  multitenant:views:drop
+  multitenant:views:refresh
+  multitenant:views_and_triggers:create
+  multitenant:views_and_triggers:refresh
 
 == How It Works
 
