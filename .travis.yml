@@ -4,5 +4,5 @@ rvm:
 env:
   - DB=mysql
 before_script:
-  - "mysql -e 'create database multiteanant_mysql_test;'"
+  - "mysql -e 'create database tenant_test;'"
 script: bundle exec rspec spec

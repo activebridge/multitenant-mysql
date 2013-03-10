@@ -1,3 +1,6 @@
+require_relative '../../views_and_triggers/list/list'
+require_relative '../../views_and_triggers/list/sql'
+
 module Multitenant
   module Views
     module SQL
@@ -10,7 +13,7 @@ module Multitenant
             view_name = model_name.to_s.downcase.pluralize + "_view"
 
             # stop if view already exists
-            return if ActiveRecord::Base.connection.table_exists?(view_name)
+            return if Multitenant::List.new(Multitenant::SQL::VIEWS).exists?(view_name)
 
             view_sql = %Q(
         CREATE VIEW #{view_name} AS
@@ -18,8 +21,6 @@ module Multitenant
         FROM #{model.table_name}
         WHERE tenant = SUBSTRING_INDEX(USER(), '@', 1);
             )
-
-            p view_sql
 
             ActiveRecord::Base.connection.execute(view_sql)
             p "==================== Generated View: #{view_name} =================="

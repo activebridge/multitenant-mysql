@@ -1,30 +1,24 @@
+require_relative '../../views_and_triggers/list/list'
+require_relative '../../views_and_triggers/list/sql'
+
 module Multitenant
   module Views
     module SQL
+
       class Drop
 
-        class << self
-          def run
-            views_list.each do |view|
-              ActiveRecord::Base.connection.execute("drop view #{view};")
-              p "==================== Dropped View: #{view} =================="
-            end
-          end
+        def self.run
+          list = Multitenant::List.new
+          list.sql = Multitenant::SQL::VIEWS
 
-          private
-
-          def views_list
-            list = ActiveRecord::Base.connection.execute(views_list_sql)
-            list.to_a.flatten
-          end
-
-          def views_list_sql
-            database = Multitenant::Mysql::DB.configs['database']
-            "SELECT TABLE_NAME FROM information_schema.`TABLES` WHERE TABLE_TYPE LIKE 'VIEW' AND TABLE_SCHEMA LIKE '#{database}';"
+          list.to_a.each do |view|
+            ActiveRecord::Base.connection.execute("DROP VIEW #{view};")
+            p "==================== Dropped View: #{view} =================="
           end
         end
 
       end
+
     end
   end
 end

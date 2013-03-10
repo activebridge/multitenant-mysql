@@ -31,7 +31,9 @@ describe Multitenant::Mysql do
     end
 
     context '.tenant' do
-      Subdomain = :constant
+      before do
+        Subdomain = :constant
+      end
 
       it 'should find and return appropriate model' do
         subject.active_record_configs = { tenant_model: { name: 'Subdomain' } }

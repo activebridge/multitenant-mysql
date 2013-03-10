@@ -1,21 +1,8 @@
+require_relative './db'
+
 module Multitenant
   module Mysql
     class NoTenantRegistratedError < StandardError; end;
-
-    class DB
-      class << self
-        def configs
-          Rails.configuration.database_configuration[Rails.env]
-        end
-
-        def establish_connection_for tenant_name
-          config = configs
-          config['username'] = tenant_name.blank? ? 'root' : tenant_name
-          ActiveRecord::Base.establish_connection(config)
-          true
-        end
-      end
-    end
 
     class Tenant
       def self.exists? tenant_name
