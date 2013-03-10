@@ -4,7 +4,6 @@ describe ActiveRecord::Base do
   subject { ActiveRecord::Base }
 
   before do
-    Multitenant::Mysql::ConfFile.path = CONF_FILE_PATH
     Multitenant::Mysql.arc = { models: ['Book', 'Task'] }
   end
 

@@ -6,6 +6,9 @@ require 'action_controller'
 require 'multitenant-mysql'
 
 RSpec.configure do |config|
-  Multitenant::Mysql::ConfFile.path = File.expand_path('../', __FILE__) + '/support/multitenant_mysql_conf'
   CONF_FILE_PATH = File.expand_path('../', __FILE__) + '/support/multitenant_mysql_conf'
+
+  config.before do
+    Multitenant::Mysql::ConfFile.path = CONF_FILE_PATH
+  end
 end
