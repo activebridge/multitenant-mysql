@@ -81,14 +81,14 @@ multitenant:views_and_triggers:refresh
 
 - list of available generators to manage views and triggers
 
-  multitenant:triggers:create
-  multitenant:triggers:drop
-  multitenant:triggers:refresh
-  multitenant:views:create
-  multitenant:views:drop
-  multitenant:views:refresh
-  multitenant:views_and_triggers:create
-  multitenant:views_and_triggers:refresh
+   multitenant:triggers:create
+   multitenant:triggers:drop
+   multitenant:triggers:refresh
+   multitenant:views:create
+   multitenant:views:drop
+   multitenant:views:refresh
+   multitenant:views_and_triggers:create
+   multitenant:views_and_triggers:refresh
 
 == How It Works
 
