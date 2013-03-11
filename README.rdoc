@@ -80,6 +80,7 @@ multitenant:views_and_triggers:refresh
   set_current_tenant_by_subdomain
 
 - list of available generators to manage views and triggers
+
   multitenant:triggers:create
   multitenant:triggers:drop
   multitenant:triggers:refresh
