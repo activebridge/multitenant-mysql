@@ -74,10 +74,10 @@ if method used by `set_current_tenant` returns blank name then `root` account is
 == Options and Notes
 
 - if you have changed columns for tenant dependend models then you need to regenerate views, you could use generator
-multitenant:views_and_triggers:refresh
+   multitenant:views_and_triggers:refresh
 
-- if you want to use subdomain as a tenant name then you can use metho
-  set_current_tenant_by_subdomain
+- if you want to use subdomain as a tenant name then you can use method
+   set_current_tenant_by_subdomain
 
 - list of available generators to manage views and triggers
 
