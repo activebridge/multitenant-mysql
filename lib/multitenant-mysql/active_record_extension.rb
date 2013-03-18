@@ -29,15 +29,13 @@ class ActiveRecord::Base
   end
 
   def self.inherited(child)
-    return unless FileTest.exist?(Multitenant::Mysql::ConfFile.full_path) # do nothing if no config file provided
-    require Multitenant::Mysql::ConfFile.path
-
+    return unless Multitenant::Mysql.configs.centralized?
     model_name = child.to_s
-    if Multitenant::Mysql.models.include? model_name
+    if Multitenant::Mysql.configs.centralized.models.include? model_name
       child.send :acts_as_tenant
     end
 
-    if Multitenant::Mysql.tenant == child
+    if Multitenant::Mysql.configs.centralized.tenant == child
       child.send :acts_as_tenants_bucket
     end
   end

@@ -2,11 +2,6 @@ require 'spec_helper'
 
 describe ActiveRecord::Base do
   subject { ActiveRecord::Base }
-
-  before do
-    Multitenant::Mysql.arc = { models: ['Book', 'Task'] }
-  end
-
   it 'should respond to acts_as_tenant' do
     subject.should respond_to(:acts_as_tenant)  
   end

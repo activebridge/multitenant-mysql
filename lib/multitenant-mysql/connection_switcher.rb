@@ -7,7 +7,10 @@ module Multitenant
     class Tenant
       def self.exists? tenant_name
         return true if tenant_name.blank?
-        if Multitenant::Mysql.tenant.where(Multitenant::Mysql.tenant_name_attr => tenant_name).blank?
+        # TODO: refactor 2 lines below
+        tenant = Multitenant::Mysql.configs.centralized.tenant
+        field = Multitenant::Mysql.configs.centralized.bucket.field
+        if tenant.where(field => tenant_name).blank?
           raise Multitenant::Mysql::NoTenantRegistratedError.new("No tenant registered: #{tenant_name}")
         end
         true
