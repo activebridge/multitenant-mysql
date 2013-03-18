@@ -6,36 +6,38 @@ module Multitenant
     class Configs
       attr_accessor :refresh_on_migrate, :centralized
 
-      def initialize(centralized)
-        @centralized        = centralized
-        @refresh_on_migrate = true
+      def initialize(options = {})
+        @refresh_on_migrate = options[:refresh_on_migrate] || false
+        @enable_centralized_mode   = options[:enable_centralized_mode] || false
       end
 
-      def centralized_mode(enable = true)
-        @centralized_mode = enable
+      def centralized_mode(enable = false)
+        @enable_centralized_mode = enable
+        if block_given?
+          yield(centralized)
+          @enable_centralized_mode = true
+        end
 
-        return unless enable
         if enable && !block_given?
           raise '
-            you should provie configs or disable centralized mode by
+            you should provie a block or disable centralized mode by
             conf.centralized_mode false
           '
         end
-        yield(centralized)
       end
 
-      def centralized?
-        @centralized_mode
+      def centralized_mode?
+        @enable_centralized_mode
       end
     end
 
     class << self
       def configure &block
         raise 'Multitenant::Mysql: No configs provided' unless block_given?
-        centralized = Centralized.new
-        configs = Configs.new(centralized)
+        configs = Configs.new
+        configs.centralized = Centralized.new
         block.call(configs)
-        Multitenant::Mysql.configs = configs
+        self.configs = configs
       end
 
       def configs=configs
@@ -45,6 +47,12 @@ module Multitenant
       def configs
         @configs
       end
+
+      def configure_default
+        self.configs = Configs.new
+      end
     end
   end
 end
+
+Multitenant::Mysql.configure_default
