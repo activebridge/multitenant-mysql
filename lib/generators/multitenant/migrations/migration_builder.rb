@@ -10,7 +10,7 @@ module Multitenant
 
         actions = Multitenant::Mysql.models.map { |model_name| 
           model = model_name.constantize
-          "add_column :#{model.table_name}, :tenant, :string"
+          "add_column :#{model.original_table_name}, :tenant, :string"
         }
 
         dest_path = "db/migrate/#{migration_number}_#{MIGRATION_NAME}.rb"
