@@ -7,7 +7,7 @@ module Multitenant
       class Create
 
         def self.run
-          Multitenant::Mysql.models.each do |model_name|
+          Multitenant::Mysql.configs.models.each do |model_name|
             model = model_name.constantize
             columns = model.column_names.join(', ')
             view_name = model_name.to_s.downcase.pluralize + "_view"

@@ -1,7 +1,6 @@
 require 'rails/generators'
 require_relative './sql/drop'
 require_relative './sql/create'
-require Rails.root.to_s + '/config/multitenant_mysql_conf'
 
 module Multitenant
   module Triggers

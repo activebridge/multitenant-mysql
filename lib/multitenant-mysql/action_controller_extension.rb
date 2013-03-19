@@ -2,7 +2,7 @@ require_relative './connection_switcher'
 
 class ActionController::Base
   def self.set_current_tenant(tenant_method)
-    raise "you should provide tenant method" unless tenant_method
+    raise InvalidTenantError.new('Multitenant::Mysql: you should provide tenant method') unless tenant_method
     @@tenant_method = tenant_method
 
     before_filter :establish_tenant_connection

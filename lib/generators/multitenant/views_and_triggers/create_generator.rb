@@ -3,8 +3,6 @@ require 'rails/generators'
 require_relative '../views/sql/create'
 require_relative '../triggers/sql/create'
 
-require Rails.root.to_s + '/config/multitenant_mysql_conf'
-
 module Multitenant
   module ViewsAndTriggers
     class CreateGenerator < Rails::Generators::Base

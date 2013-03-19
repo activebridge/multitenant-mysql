@@ -29,13 +29,12 @@ class ActiveRecord::Base
   end
 
   def self.inherited(child)
-    return unless Multitenant::Mysql.configs.centralized_mode?
     model_name = child.to_s
-    if Multitenant::Mysql.configs.centralized.models.include? model_name
+    if Multitenant::Mysql.configs.models.include? model_name
       child.send :acts_as_tenant
     end
 
-    if Multitenant::Mysql.configs.centralized.tenant == child
+    if Multitenant::Mysql.configs.tenant == child
       child.send :acts_as_tenants_bucket
     end
   end
