@@ -5,3 +5,4 @@ gemspec
 gem 'rails'
 gem 'rspec'
 gem 'mysql2'
+gem 'coveralls', require: false
