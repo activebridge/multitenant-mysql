@@ -18,7 +18,6 @@ The advantages of such approach:
 * {<img src="https://codeclimate.com/github/eugenekorpan/multitenant-mysql.png" />}[https://codeclimate.com/github/eugenekorpan/multitenant-mysql]
 * {<img src="https://coveralls.io/repos/eugenekorpan/multitenant-mysql/badge.png?branch=master" alt="Coverage Status" />}[https://coveralls.io/r/eugenekorpan/multitenant-mysql]
 
-
 == Installation
 
 1 Add this line to your application's Gemfile:
@@ -34,14 +33,14 @@ The advantages of such approach:
 1 run
   rails g multitenant:install
 
-this will create a sample of config file in "rails_root/config/multitenant_mysql_conf.rb"
-This is the place where you list all your tenant dependent models and the model which contains all the tenants.
-E.g:
+This will create a sample of config file in "rails_root/config/initializers/multitenant_mysql_conf.rb". Update it according to your needs. E.g:
 
-  Multitenant::Mysql.arc = {
-    models: ['Book', 'Task'],
-    tenant_model: { name: 'Subdomain' }
-  }
+  Multitenant::Mysql.configure do |conf|
+    conf.models = ['Book', 'Task']
+    conf.tenants_bucket 'Subdomain' do |tb|
+      tb.field = 'name'
+    end
+  end
 
 Important: Before moving on you have to update this file as all further steps use those configs.
 
@@ -89,6 +88,7 @@ if method used by `set_current_tenant` returns blank name then `root` account is
    multitenant:views:drop
    multitenant:views:refresh
    multitenant:views_and_triggers:create
+   multitenant:views_and_triggers:drop
    multitenant:views_and_triggers:refresh
 
 == How It Works

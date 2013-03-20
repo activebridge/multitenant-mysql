@@ -7,7 +7,7 @@ module Multitenant
     CONFIG_FILE_NAME = 'multitenant_mysql_conf.rb'
 
     def copy_conf_file_into_app
-      dest = "config/#{CONFIG_FILE_NAME}"
+      dest = "config/initializers/#{CONFIG_FILE_NAME}"
       return if FileTest.exist?(dest) # to prevent overwritting of existing file
       src = File.expand_path(File.dirname(__FILE__)) + "/templates/#{CONFIG_FILE_NAME}"
       FileUtils.copy_file src, dest

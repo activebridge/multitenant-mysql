@@ -2,13 +2,13 @@ require_relative './db'
 
 module Multitenant
   module Mysql
-    class NoTenantRegistratedError < StandardError; end;
-
     class Tenant
       def self.exists? tenant_name
         return true if tenant_name.blank?
-        if Multitenant::Mysql.tenant.where(Multitenant::Mysql.tenant_name_attr => tenant_name).blank?
-          raise Multitenant::Mysql::NoTenantRegistratedError.new("No tenant registered: #{tenant_name}")
+        tenant = Multitenant::Mysql.configs.tenant
+        field = Multitenant::Mysql.configs.bucket.field
+        if tenant.where(field => tenant_name).blank?
+          raise NoTenantRegistratedError.new("No tenant registered: #{tenant_name}")
         end
         true
       end

@@ -7,7 +7,7 @@ module Multitenant
 
       class Create
         def self.run
-          Multitenant::Mysql.models.each do |model_name|
+          Multitenant::Mysql.configs.models.each do |model_name|
             model = model_name.constantize
             trigger_name = model.original_table_name + '_tenant_trigger'
 

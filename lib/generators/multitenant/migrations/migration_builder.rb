@@ -8,7 +8,7 @@ module Multitenant
       def run
         return if migration_exists?
 
-        actions = Multitenant::Mysql.models.map { |model_name| 
+        actions = Multitenant::Mysql.configs.models.map { |model_name|
           model = model_name.constantize
           "add_column :#{model.original_table_name}, :tenant, :string"
         }

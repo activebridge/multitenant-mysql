@@ -8,14 +8,10 @@ require 'multitenant-mysql'
 require 'coveralls'
 Coveralls.wear!
 
-
 GEM_ROOT_PATH = File.expand_path('../../', __FILE__)
-CONF_FILE_PATH = GEM_ROOT_PATH + '/spec/support/multitenant_mysql_conf'
 
 RSpec.configure do |config|
   config.before do
-    Multitenant::Mysql::ConfFile.path = CONF_FILE_PATH
-
     ActiveRecord::Base.establish_connection({
       adapter: 'mysql2',
       username: 'root',
@@ -24,6 +20,14 @@ RSpec.configure do |config|
     ActiveRecord::Base.connection.execute('drop database if exists `tenant_test`;')
     ActiveRecord::Base.connection.execute('create database `tenant_test`;')
     ActiveRecord::Base.connection.execute('use `tenant_test`;')
+
+
+    Multitenant::Mysql.configure do |conf|
+      conf.models = ['Book']
+      conf.tenants_bucket 'Subdomain' do |tb|
+        tb.field = 'name'
+      end
+    end
   end
 
   config.after do
