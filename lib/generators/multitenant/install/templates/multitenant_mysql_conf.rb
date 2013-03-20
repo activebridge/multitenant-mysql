@@ -2,7 +2,7 @@
 #
 #   Multitenant::Mysql.configure do |conf|
 #     conf.models = ['Book', 'Task', 'Post']
-#     conf.tenants_bucket 'Subdomains' do |tb|
+#     conf.tenants_bucket 'Subdomain' do |tb|
 #       tb.field = 'name'
 #     end
 #   end

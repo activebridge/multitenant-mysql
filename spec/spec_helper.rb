@@ -5,6 +5,9 @@ require 'active_record'
 require 'action_controller'
 require 'multitenant-mysql'
 
+require 'coveralls'
+Coveralls.wear!
+
 GEM_ROOT_PATH = File.expand_path('../../', __FILE__)
 
 RSpec.configure do |config|
