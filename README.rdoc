@@ -16,6 +16,7 @@ The advantages of such approach:
 * {<img src="https://travis-ci.org/eugenekorpan/multitenant-mysql.png?branch=master"/>}[http://travis-ci.org/eugenekorpan/multitenant-mysql]
 * {<img src="https://gemnasium.com/eugenekorpan/multitenant-mysql.png" alt="Dependency Status" />}[https://gemnasium.com/eugenekorpan/multitenant-mysql]
 * {<img src="https://codeclimate.com/github/eugenekorpan/multitenant-mysql.png" />}[https://codeclimate.com/github/eugenekorpan/multitenant-mysql]
+* {<img src="https://coveralls.io/repos/eugenekorpan/multitenant-mysql/badge.png?branch=master" alt="Coverage Status" />}[https://coveralls.io/r/eugenekorpan/multitenant-mysql]
 
 
 == Installation
