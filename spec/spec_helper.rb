@@ -12,8 +12,7 @@ RSpec.configure do |config|
     ActiveRecord::Base.establish_connection({
       adapter: 'mysql2',
       username: 'root',
-      database: 'tenant_test',
-      password: 'password'
+      password: ''
     })
     ActiveRecord::Base.connection.execute('drop database if exists `tenant_test`;')
     ActiveRecord::Base.connection.execute('create database `tenant_test`;')
