@@ -1,2 +1,6 @@
 1.1.1 (March 18, 2013)
   * fixed migration generation (https://github.com/eugenekorpan/multitenant-mysql/issues/20)
+
+1.2.0 (March 20, 2013)
+  * refactored some code
+  * changed config file structure little bit, for older versions just update the config file

@@ -18,7 +18,6 @@ The advantages of such approach:
 * {<img src="https://codeclimate.com/github/eugenekorpan/multitenant-mysql.png" />}[https://codeclimate.com/github/eugenekorpan/multitenant-mysql]
 * {<img src="https://coveralls.io/repos/eugenekorpan/multitenant-mysql/badge.png?branch=master" alt="Coverage Status" />}[https://coveralls.io/r/eugenekorpan/multitenant-mysql]
 
-
 == Installation
 
 1 Add this line to your application's Gemfile:
