@@ -14,6 +14,14 @@ module Multitenant
         def tenant
           @bucket.model
         end
+
+        def bucket_field
+          @bucket.field
+        end
+
+        def tenant?(model)
+          tenant == model
+        end
       end
     end
   end

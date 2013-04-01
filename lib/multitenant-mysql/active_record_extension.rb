@@ -1,10 +1,11 @@
 class ActiveRecord::Base
   def self.acts_as_tenants_bucket
     after_create do
-      config = Rails.configuration.database_configuration
-      password = config[Rails.env]["password"]
-      ActiveRecord::Base.connection.execute "GRANT ALL PRIVILEGES ON *.* TO '#{self.name}'@'localhost' IDENTIFIED BY '#{password}' WITH GRANT OPTION;"
-      ActiveRecord::Base.connection.execute "flush privileges;"
+      password = Multitenant::Mysql::DB.configs['password']
+      tenant_name = self.send(Multitenant::Mysql.configs.bucket_field)
+      connection = Multitenant::Mysql::DB.connection
+      connection.execute "GRANT ALL PRIVILEGES ON *.* TO '#{tenant_name}'@'localhost' IDENTIFIED BY '#{password}' WITH GRANT OPTION;"
+      connection.execute "flush privileges;"
     end
   end
 
@@ -29,13 +30,16 @@ class ActiveRecord::Base
   end
 
   def self.inherited(child)
+    super
+
     model_name = child.to_s
     if Multitenant::Mysql.configs.models.include? model_name
       child.send :acts_as_tenant
     end
 
-    if Multitenant::Mysql.configs.tenant == child
+    if Multitenant::Mysql.configs.tenant? child
       child.send :acts_as_tenants_bucket
     end
+
   end
 end
