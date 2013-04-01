@@ -15,6 +15,10 @@ module Multitenant
           config['username'] = tenant_name.blank? ? 'root' : tenant_name
           ActiveRecord::Base.establish_connection(config)
         end
+
+        def connection
+          ActiveRecord::Base.connection
+        end
       end
     end
   end

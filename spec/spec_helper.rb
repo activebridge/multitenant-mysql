@@ -10,13 +10,12 @@ Coveralls.wear!
 
 GEM_ROOT_PATH = File.expand_path('../../', __FILE__)
 
+require 'yaml'
+$cnf = YAML::load_file(File.join(File.dirname(File.expand_path(__FILE__)), './conf/database.yml'))
+ActiveRecord::Base.establish_connection($cnf)
+
 RSpec.configure do |config|
   config.before do
-    ActiveRecord::Base.establish_connection({
-      adapter: 'mysql2',
-      username: 'root',
-      password: ''
-    })
     ActiveRecord::Base.connection.execute('drop database if exists `tenant_test`;')
     ActiveRecord::Base.connection.execute('create database `tenant_test`;')
     ActiveRecord::Base.connection.execute('use `tenant_test`;')
