@@ -7,3 +7,6 @@
 
 1.2.1 (April 1, 2013)
   * fixed bug (https://github.com/eugenekorpan/multitenant-mysql/issues/25)
+
+1.2.2 (Jun 20, 2013)
+  * fixed issue (https://github.com/eugenekorpan/multitenant-mysql/issues/28)
