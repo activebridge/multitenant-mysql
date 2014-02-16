@@ -5,6 +5,7 @@ describe Multitenant::Triggers::SQL::Create do
 
   it 'should generate trigger' do
     create_table('books')
+    create_view_for_table 'books'
     class Subdomain < ActiveRecord::Base; end;
     class Book < ActiveRecord::Base; end;
     subject.run
