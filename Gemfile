@@ -5,4 +5,5 @@ gemspec
 gem 'rails'
 gem 'rspec'
 gem 'mysql2'
+gem 'activerecord-mysql2-adapter'
 gem 'coveralls', require: false
