@@ -3,7 +3,7 @@ module Multitenant
     module Configs
       class Bucket
         DEFAULT_TENANT_NAME_ATTR = [:name, :title]
-        attr_accessor :name, :field
+        attr_accessor :name, :field, :super_tenant_identifier
 
         def initialize(name)
           @name = name
@@ -24,6 +24,14 @@ module Multitenant
           @field || raise(InvalidBucketFieldError.new('Multitenant::Mysql: You should specify tenants bucket field or use one default: name, title'))
           raise InvalidBucketFieldError.new("Multitenant::Mysql: #{model} doesn't have '#{@field}' attribute") unless validate_field?
           @field
+        end
+
+        def has_super_tenant_identifier?
+          super_tenant_identifier.present?
+        end
+
+        def super_tenant
+          model.send("find_by_#{field}".to_sym, super_tenant_identifier)
         end
 
         private

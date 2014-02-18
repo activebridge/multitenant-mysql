@@ -20,7 +20,6 @@ RSpec.configure do |config|
     ActiveRecord::Base.connection.execute('create database `tenant_test`;')
     ActiveRecord::Base.connection.execute('use `tenant_test`;')
 
-
     Multitenant::Mysql.configure do |conf|
       conf.models = ['Book']
       conf.tenants_bucket 'Subdomain' do |tb|
@@ -35,24 +34,32 @@ RSpec.configure do |config|
   end
 end
 
+ActiveRecord::Base.logger = Logger.new(STDOUT)
+
 def create_table(name)
+  create_statement = "create table `#{name}`
+                      (`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                      `tenant` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL);"
   ActiveRecord::Base.connection.execute("drop table if exists `#{name}`;")
-  ActiveRecord::Base.connection.execute("create table `#{name}`
-                                          (`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                          `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                                          `tenant` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL);")
+  ActiveRecord::Base.connection.execute(create_statement)
 end
 
 def create_view_for_table(name)
-  create_table(name)
-  ActiveRecord::Base.connection.execute("
+  view_sql = "
         CREATE VIEW #{name}_view AS
-        SELECT id, name, tenant FROM #{name}
-        ")
+        SELECT id, name, tenant FROM #{name} "
+
+  if Multitenant::Mysql.configs.bucket.has_super_tenant_identifier?
+    view_sql += "WHERE IF(SUBSTRING_INDEX(USER(), '@', 1) = '#{Multitenant::Mysql.configs.bucket.super_tenant_identifier}', tenant, SUBSTRING_INDEX(USER(), '@', 1)) = tenant"
+  else
+    view_sql += 'WHERE tenant = SUBSTRING_INDEX(USER(), \'@\', 1);'
+  end
+
+  ActiveRecord::Base.connection.execute(view_sql)
 end
 
 def create_trigger_for_table(name)
-  create_table(name)
   ActiveRecord::Base.connection.execute("
         CREATE TRIGGER #{name}_tenant_trigger
         BEFORE INSERT ON #{name}

@@ -4,6 +4,7 @@ describe Multitenant::Views::SQL::Drop do
   subject { Multitenant::Views::SQL::Drop }
 
   it 'should drop view' do
+    create_table 'books'
     create_view_for_table('books')
     class Subdomain < ActiveRecord::Base; end;
     class Book < ActiveRecord::Base; end;

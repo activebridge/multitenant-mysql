@@ -19,9 +19,17 @@ module Multitenant
         CREATE VIEW #{view_name} AS
         SELECT #{columns}
         FROM #{model.table_name}
-        WHERE tenant = SUBSTRING_INDEX(USER(), '@', 1);
             )
 
+            if Multitenant::Mysql.configs.bucket.has_super_tenant_identifier?
+              #puts "YES IT HAS SUPER TENANT"
+              view_sql += "WHERE IF(SUBSTRING_INDEX(USER(), '@', 1) = '#{Multitenant::Mysql.configs.bucket.super_tenant_identifier}', tenant, SUBSTRING_INDEX(USER(), '@', 1)) = tenant"
+            else
+              #puts "NO IT DOESNT HAVE SUPER TENANT"
+              view_sql += 'WHERE tenant = SUBSTRING_INDEX(USER(), \'@\', 1);'
+            end
+
+            #puts view_sql
             ActiveRecord::Base.connection.execute(view_sql)
             p "==================== Generated View: #{view_name} =================="
           end
