@@ -9,7 +9,7 @@ module Multitenant
         def self.run
           Multitenant::Mysql.configs.models.each do |model_name|
             model = model_name.constantize
-            columns = model.column_names.join(', ')
+            columns = model.column_names.collect{|name| "`#{name}`"}.join(', ')
             view_name = model_name.to_s.downcase.pluralize + "_view"
 
             # stop if view already exists
