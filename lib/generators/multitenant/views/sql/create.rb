@@ -10,7 +10,7 @@ module Multitenant
           Multitenant::Mysql.configs.models.each do |model_name|
             model = model_name.constantize
             columns = model.column_names.collect{|name| "`#{name}`"}.join(', ')
-            view_name = model_name.to_s.downcase.pluralize + "_view"
+            view_name = model_name.to_s.underscore.pluralize + "_view"
 
             # stop if view already exists
             return if Multitenant::List.new(Multitenant::SQL::VIEWS).exists?(view_name)

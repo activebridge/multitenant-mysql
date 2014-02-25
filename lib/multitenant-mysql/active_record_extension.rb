@@ -13,7 +13,7 @@ ActiveRecord::Base.class_eval do
     end
 
     def acts_as_tenant
-      view_name = model_name.to_s.downcase.pluralize + "_view"
+      view_name = model_name.to_s.underscore.pluralize + "_view"
       # check whether the view exists in db
       if ActiveRecord::Base.connection.table_exists? view_name
         self.class_eval do
