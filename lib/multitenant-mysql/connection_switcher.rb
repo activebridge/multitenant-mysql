@@ -8,7 +8,7 @@ module Multitenant
         tenant = Multitenant::Mysql.configs.tenant
         field = Multitenant::Mysql.configs.bucket.field
         if tenant.where(field => tenant_name).blank?
-          raise NoTenantRegistratedError.new("No tenant registered: #{tenant_name}")
+          raise NoTenantRegisteredError.new("No tenant registered: #{tenant_name}")
         end
         true
       end
@@ -28,7 +28,7 @@ module Multitenant
       end
 
       def execute
-        tenant_name = action_controller.send(method)
+        tenant_name = @action_controller.send(method)
         return unless Tenant.exists?(tenant_name)
         DB.establish_connection_for tenant_name
       end

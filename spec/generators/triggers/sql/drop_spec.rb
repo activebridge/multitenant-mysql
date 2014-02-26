@@ -4,6 +4,7 @@ describe Multitenant::Triggers::SQL::Drop do
   subject { Multitenant::Triggers::SQL::Drop }
 
   it 'should drop trigger' do
+    create_table 'books'
     create_trigger_for_table('books')
     class Subdomain < ActiveRecord::Base; end;
     class Book < ActiveRecord::Base; end;

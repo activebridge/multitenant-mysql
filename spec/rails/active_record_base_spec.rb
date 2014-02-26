@@ -13,6 +13,7 @@ describe ActiveRecord::Base do
   it 'should redefine table name and primary key and keep original table name' do
     Multitenant::Mysql.stub_chain(:configs, :models).and_return(['Book'])
     Multitenant::Mysql.stub_chain(:configs, :tenant?).and_return(false)
+    Multitenant::Mysql.stub_chain(:configs, :bucket, :has_super_tenant_identifier?).and_return(false)
     create_table('books')
     create_view_for_table('books')
 
@@ -30,6 +31,7 @@ describe ActiveRecord::Base do
       Multitenant::Mysql.stub_chain(:configs, :tenant?).and_return(true)
       Multitenant::Mysql.stub_chain(:configs, :bucket_field).and_return('name')
       Multitenant::Mysql::DB.stub_chain(:configs, :[]).and_return($cnf['password'])
+      Multitenant::Mysql.stub_chain(:configs, :bucket, :has_super_tenant_identifier?).and_return(false)
 
       create_table('users')
       create_view_for_table('users')

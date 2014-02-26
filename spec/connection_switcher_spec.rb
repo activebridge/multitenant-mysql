@@ -21,7 +21,7 @@ describe Multitenant::Mysql::Tenant do
 
     it 'should raise an error for unexisting tenant' do
       ActiveRecord::Base.stub(:where).and_return(nil)
-      expect { subject.exists?('invalid tenant') }.to raise_error(Multitenant::Mysql::NoTenantRegistratedError)
+      expect { subject.exists?('invalid tenant') }.to raise_error(Multitenant::Mysql::NoTenantRegisteredError)
     end
   end
 

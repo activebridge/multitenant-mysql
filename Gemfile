@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Specify your gem's dependencies in multitenant-mysql.gemspec
 gemspec
-gem 'rails'
+gem 'rails', '>=3.2.16'
 gem 'rspec'
 gem 'mysql2'
-gem 'coveralls', require: false
+gem 'coveralls', '0.6.7', require: false
