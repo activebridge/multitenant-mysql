@@ -26,23 +26,36 @@ describe ActiveRecord::Base do
   end
 
   context 'bucket' do
-    it 'should create new mysql account' do
+
+    before do
       Multitenant::Mysql.stub_chain(:configs, :models).and_return([])
       Multitenant::Mysql.stub_chain(:configs, :tenant?).and_return(true)
       Multitenant::Mysql.stub_chain(:configs, :bucket_field).and_return('name')
       Multitenant::Mysql::DB.stub_chain(:configs, :[]).and_return($cnf['password'])
       Multitenant::Mysql.stub_chain(:configs, :bucket, :has_super_tenant_identifier?).and_return(false)
-
-      create_table('users')
-      create_view_for_table('users')
+      create_bucket('users')
       class User < ActiveRecord::Base; end;
+    end
 
+    it 'should create new mysql account' do
       mock_connection = double
       mock_connection.should_receive(:execute).with("GRANT ALL PRIVILEGES ON *.* TO 'default_name'@'localhost' IDENTIFIED BY '#{$cnf['password']}' WITH GRANT OPTION;").once
       mock_connection.should_receive(:execute).with("flush privileges;").once
       Multitenant::Mysql::DB.stub(:connection).and_return(mock_connection)
 
-      expect(User.create(name: 'default_name', tenant: 'bla bla bla')).to be
+      expect(User.create(name: 'default_name')).to be
+    end
+
+    it 'should remove mysql account' do
+      ActiveRecord::Base.connection.execute("INSERT INTO `users` (`name`) VALUES ('default_name')")
+      mock_connection = double
+
+      mock_connection.should_receive(:execute).with("DELETE FROM mysql.user where user='default_name';").once
+      mock_connection.should_receive(:execute).with("flush privileges;").once
+      Multitenant::Mysql::DB.stub(:connection).and_return(mock_connection)
+
+      user = User.find_by_name('default_name')
+      expect(user.destroy).to be
     end
   end
 end
