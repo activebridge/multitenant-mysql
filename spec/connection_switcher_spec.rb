@@ -12,11 +12,11 @@ describe Multitenant::Mysql::Tenant do
     it 'should return true for existing tenant' do
       mock = double('Subdomain')
       Subdomain.stub(:where).and_return([mock])
-      expect(subject.exists?('blade')).to be_true
+      expect(subject.exists?('blade')).to be true
     end
 
     it 'should return true for blank name' do
-      expect(subject.exists?('')).to be_true
+      expect(subject.exists?('')).to be true
     end
 
     it 'should raise an error for unexisting tenant' do

@@ -32,7 +32,7 @@ describe Multitenant::Mysql::Configs::Bucket do
   context '#super_tenant' do
 
     context 'when no identifier has been specified' do
-      its(:has_super_tenant_identifier?) { should be_false }
+      its(:has_super_tenant_identifier?) { should be false }
     end
 
     context 'with an identifier' do
@@ -41,7 +41,7 @@ describe Multitenant::Mysql::Configs::Bucket do
         subject.super_tenant_identifier = 'super_admin'
       end
 
-      its(:has_super_tenant_identifier?) { should be_true }
+      its(:has_super_tenant_identifier?) { should be true }
 
       context 'without a matching record' do
         its(:super_tenant) { should be_nil }
