@@ -3,6 +3,7 @@
 Web app often faces multitenancy problem and there are already few gems that help to solve this issue but this one uses different approach.
 Instead of default scopes or creating a separate database for every single tenant this gem uses mysql views and triggers.
 The idea is taken from http://blog.empowercampaigns.com/post/1044240481/multi-tenant-data-and-mysql
+Seems like link above doesn't work any more. Here is another one https://jelastic.zendesk.com/entries/22102272-How-to-design-a-multi-tenant-mysql-database-MySQL-example-, not as good as the one above but it's the best that I could find in the network.
 
 The advantages of such approach:
 - no default scopes
