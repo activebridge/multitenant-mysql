@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'active_record'
 require 'action_controller'
 require 'multitenant-mysql'
+require 'rspec/its'
 
 require 'coveralls'
 Coveralls.wear!
