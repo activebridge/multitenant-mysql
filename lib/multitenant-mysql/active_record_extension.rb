@@ -5,9 +5,14 @@ ActiveRecord::Base.class_eval do
     def acts_as_tenants_bucket
       after_create do
         password = Multitenant::Mysql::DB.configs['password']
-        tenant_name = self.send(Multitenant::Mysql.configs.bucket_field)
         connection = Multitenant::Mysql::DB.connection
         connection.execute "GRANT ALL PRIVILEGES ON *.* TO '#{tenant_name}'@'localhost' IDENTIFIED BY '#{password}' WITH GRANT OPTION;"
+        connection.execute "flush privileges;"
+      end
+
+      after_destroy do
+        connection = Multitenant::Mysql::DB.connection
+        connection.execute "DELETE FROM mysql.user where user='#{tenant_name}';"
         connection.execute "flush privileges;"
       end
     end
@@ -47,6 +52,10 @@ ActiveRecord::Base.class_eval do
       end
     end
 
+  end
+
+  def tenant_name
+    tenant ||= self.send(Multitenant::Mysql.configs.bucket_field)
   end
 
 end

@@ -46,6 +46,14 @@ def create_table(name)
   ActiveRecord::Base.connection.execute(create_statement)
 end
 
+def create_bucket(name)
+  create_statement = "create table `#{name}`
+                      (`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL);"
+  ActiveRecord::Base.connection.execute("drop table if exists `#{name}`;")
+  ActiveRecord::Base.connection.execute(create_statement)
+end
+
 def create_view_for_table(name)
   view_sql = "
         CREATE VIEW #{name}_view AS
