@@ -11,7 +11,7 @@ describe Multitenant::Mysql::Tenant do
   context '#exists?' do
     it 'should return true for existing tenant' do
       mock = double('Subdomain')
-      Subdomain.stub(:where).and_return([mock])
+      allow(Subdomain).to receive(:where).and_return([mock])
       expect(subject.exists?('blade')).to be true
     end
 
@@ -20,7 +20,7 @@ describe Multitenant::Mysql::Tenant do
     end
 
     it 'should raise an error for unexisting tenant' do
-      ActiveRecord::Base.stub(:where).and_return(nil)
+      allow(ActiveRecord::Base).to receive(:where).and_return(nil)
       expect { subject.exists?('invalid tenant') }.to raise_error(Multitenant::Mysql::NoTenantRegisteredError)
     end
   end
@@ -31,13 +31,11 @@ describe Multitenant::Mysql::ConnectionSwitcher do
   context '#set_tenant' do
     subject { Multitenant::Mysql::ConnectionSwitcher }
 
-    before do
-      Multitenant::Mysql::Tenant.stub(:exists?).and_return(true)
-    end
+    before { allow(Multitenant::Mysql::Tenant).to receive(:exists?).and_return(true) }
 
     it 'should change db connection' do
-      Multitenant::Mysql::DB.should respond_to(:establish_connection_for)
-      Multitenant::Mysql::DB.should_receive(:establish_connection_for).with('tenant')
+      expect(Multitenant::Mysql::DB).to respond_to(:establish_connection_for)
+      allow(Multitenant::Mysql::DB).to receive(:establish_connection_for).and_return('tenant')
       expect{ subject.set_tenant('tenant') }.to_not raise_error
     end
   end
@@ -48,9 +46,9 @@ describe Multitenant::Mysql::ConnectionSwitcher do
     subject { Multitenant::Mysql::ConnectionSwitcher.new(mock_ac, :tenant) }
 
     it 'should change db connection' do
-      Multitenant::Mysql::Tenant.stub(:exists?).and_return(true)
-      mock_ac.should_receive(:send).with(:tenant).and_return('wallmart')
-      Multitenant::Mysql::DB.should_receive(:establish_connection_for).with('wallmart')
+      allow(Multitenant::Mysql::Tenant).to receive(:exists?).and_return(true)
+      allow(mock_ac).to receive(:send).with(:tenant).and_return('wallmart')
+      allow(Multitenant::Mysql::DB).to receive(:establish_connection_for).with('wallmart')
       expect { subject.execute }.to_not raise_error
     end
   end

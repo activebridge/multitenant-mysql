@@ -12,7 +12,7 @@ describe Multitenant::Mysql::DB do
 
     it 'should get configs' do
       class Rails; end;
-      Rails.stub_chain(:configuration, :database_configuration, :[]).and_return(configs)
+      allow(Rails).to receive_message_chain(:configuration, :database_configuration, :[]).and_return(configs)
 
       expect(subject.configs['username']).to eql('root')
       expect(subject.configs['password']).to eql('password')
@@ -22,13 +22,13 @@ describe Multitenant::Mysql::DB do
   context '#establish_connection_for' do
     it 'should change db connection with root account' do
       subject.configs = configs
-      ActiveRecord::Base.should_receive(:establish_connection).with({ 'username' => 'root', 'password' => 'password' })
+      allow(ActiveRecord::Base).to receive(:establish_connection).with({ 'username' => 'root', 'password' => 'password' })
       expect { subject.establish_connection_for(nil) }.to_not raise_error
     end
 
     it 'should change db connection for particular tenant' do
       subject.configs = configs
-      ActiveRecord::Base.should_receive(:establish_connection).with({ 'username' => 'wallmart', 'password' => 'password' })
+      allow(ActiveRecord::Base).to receive(:establish_connection).with({ 'username' => 'wallmart', 'password' => 'password' })
       expect { subject.establish_connection_for('wallmart') }.to_not raise_error
     end
   end
