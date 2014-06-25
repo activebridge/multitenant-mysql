@@ -4,9 +4,9 @@ describe Multitenant::Mysql::Configs::Bucket do
 
   before do
     create_table('posts')
-    Multitenant::Mysql.stub_chain(:configs, :tenant?).and_return(true)
-    Multitenant::Mysql.stub_chain(:configs, :models).and_return([])
-    Multitenant::Mysql.stub_chain(:configs, :bucket_field).and_return('name')
+    allow(Multitenant::Mysql).to receive_message_chain(:configs, :tenant?).and_return(true)
+    allow(Multitenant::Mysql).to receive_message_chain(:configs, :models).and_return([])
+    allow(Multitenant::Mysql).to receive_message_chain(:configs, :bucket_field).and_return('name')
     class Post < ActiveRecord::Base; end;
   end
 
